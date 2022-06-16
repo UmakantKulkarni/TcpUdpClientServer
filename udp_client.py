@@ -32,8 +32,8 @@ def start(args):
     "Starts sending messages to the server."
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.settimeout(1)  # seconds
-    #sock.bind(('client_ip', client_port))
-    addr = (args.host, args.port)
+    sock.bind((args.client_ip, args.client_port))
+    addr = (args.server_ip, args.server_port)
     message = ''.join(choice(ascii_uppercase) for i in range(args.size))
     max_msg = args.count
     if args.count == 0:
@@ -52,8 +52,10 @@ def start(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(__doc__, formatter_class = argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('--host', help = 'The host that the client should connect to.', default = "127.0.0.1")
-    parser.add_argument('--port', help = 'The port that the client should connect to.', type = int, default = 61592)
+    parser.add_argument('--server_ip', help = 'The host that the client should connect to.', default = "127.0.0.1")
+    parser.add_argument('--server_port', help = 'The port that the client should connect to.', type = int, default = 61592)
+    parser.add_argument('--client_ip', help = 'Client\'s local IP address.', default = "127.0.0.1")
+    parser.add_argument('--client_port', help = 'Client\'s local port.', type = int, default = 61592)
     parser.add_argument('--verbose', '-v', help = "Increases the logging verbosity level.", action = 'count')
     parser.add_argument('--count', '-c', help = 'Number of udp packets to be sent', type = int, default = 1)
     parser.add_argument('--size', '-s', help = 'size of udp data to be sent in payload', type = int, default = 64)
